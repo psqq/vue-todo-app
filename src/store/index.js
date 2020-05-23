@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import id from 'shortid';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, merge } from 'lodash';
 
 Vue.use(Vuex);
 
@@ -53,6 +53,17 @@ export default new Vuex.Store({
     delete(state, payload) {
       state.notes = state.notes.filter(x => x.id != payload.id);
     },
+    setTitle(state, payload) {
+      state.note.title = payload.title;
+    },
+    saveOrCreateNew(state) {
+      const note = state.notes.find(x => x.id === state.note.id);
+      if (note) {
+        merge(note, state.note);
+      } else {
+        state.notes.push(state.note);
+      }
+    }
   },
   actions: {
   },

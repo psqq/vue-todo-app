@@ -4,7 +4,7 @@ import router from './router';
 import store from './store';
 import VuexUndoRedo from 'vuex-undo-redo';
 
-Vue.use(VuexUndoRedo, { ignoreMutations: ['open'] });
+Vue.use(VuexUndoRedo, { ignoreMutations: ['open', 'createEmptyNote'] });
 
 Vue.config.productionTip = false;
 
