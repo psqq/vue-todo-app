@@ -9,10 +9,13 @@
       <li v-if="isMore">...</li>
     </ul>
     <button @click="open()">Open</button>
+    <button @click="deleteNote()">Delete</button>
   </div>
 </template>
 
 <script>
+import Vuex from "vuex";
+
 export default {
   name: "NotePreview",
   props: ["note"],
@@ -30,8 +33,16 @@ export default {
     }
   },
   methods: {
+    ...Vuex.mapMutations(["delete"]),
     open() {
       this.$router.push("/note/" + this.note.id);
+    },
+    deleteNote() {
+      const id = this.note.id;
+      const yesNo = confirm("Вы уверены что хотите удалить заметку?");
+      if (yesNo) {
+        this.delete({ id });
+      }
     }
   }
 };

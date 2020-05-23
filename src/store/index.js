@@ -50,6 +50,9 @@ export default new Vuex.Store({
     open(state, payload) {
       state.note = cloneDeep(state.notes.find(x => x.id === payload.id));
     },
+    delete(state, payload) {
+      state.notes = state.notes.filter(x => x.id != payload.id);
+    },
   },
   actions: {
   },
