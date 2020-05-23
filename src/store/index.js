@@ -38,26 +38,39 @@ export default new Vuex.Store({
         { title: 'Task 7', done: false },
       ]),
     ],
+    history: [],
+    historyIndex: 0,
     note: null,
   },
   mutations: {
-    emptyState() {
-      this.replaceState({ ...initialState() });
+    emptyState(state) {
+      this.replaceState({ ...initialState(), notes: state.notes, note: state.note });
     },
     createEmptyNote(state) {
       state.note = createNote();
+      this.commit('addToHistory', state.note);
     },
     open(state, payload) {
       state.note = cloneDeep(state.notes.find(x => x.id === payload.id));
+      this.commit('resetHistory');
+    },
+    addToHistory(state, payload) {
+      state.history[++state.historyIndex] = cloneDeep(payload);
+    },
+    resetHistory(state) {
+      state.history = [cloneDeep(state.note)];
+      state.historyIndex = 0;
     },
     delete(state, payload) {
       state.notes = state.notes.filter(x => x.id != payload.id);
     },
     setTitle(state, payload) {
       state.note.title = payload.title;
+      this.commit('addToHistory', state.note);
     },
     setTodo(state, payload) {
       state.note.todo = cloneDeep(payload.todo);
+      this.commit('addToHistory', state.note);
     },
     saveOrCreateNew(state) {
       const note = state.notes.find(x => x.id === state.note.id);
@@ -70,13 +83,22 @@ export default new Vuex.Store({
     undoAllChanges(state) {
       const note = state.notes.find(x => x.id === state.note.id);
       if (note) {
-
-        console.log(JSON.parse(JSON.stringify(state.note)), JSON.parse(JSON.stringify(note)));
         state.note = note;
       } else {
         state.note = createNote();
       }
-    }
+      this.commit('resetHistory');
+    },
+    undo(state) {
+      if (state.historyIndex > 0) {
+        state.note = cloneDeep(state.history[--state.historyIndex]);
+      }
+    },
+    redo(state) {
+      if (state.historyIndex < state.history.length - 1) {
+        state.note = cloneDeep(state.history[++state.historyIndex]);
+      }
+    },
   },
   actions: {
   },

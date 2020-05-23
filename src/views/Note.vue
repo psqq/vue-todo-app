@@ -1,5 +1,8 @@
 <template>
-  <div class="about">
+  <div
+    class="about"
+    v-if="note"
+  >
     <p>
       <router-link to="/">Main page</router-link>
     </p>
@@ -7,6 +10,10 @@
       <button @click="saveChanges()">Save changes</button>
       <button @click="undoAllChangesWithConfirm()">Undo all changes</button>
       <button @click="deleteThisNote()">Delete</button>
+    </p>
+    <p>
+      <button @click="undo()">Undo</button>
+      <button @click="redo()">Redo</button>
     </p>
     Title: <input
       type="text"
@@ -54,7 +61,9 @@ export default {
       "saveOrCreateNew",
       "setTodo",
       "undoAllChanges",
-      "delete"
+      "delete",
+      "undo",
+      "redo"
     ]),
     saveChanges() {
       this.saveOrCreateNew();
