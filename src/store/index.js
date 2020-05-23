@@ -75,7 +75,7 @@ export default new Vuex.Store({
     saveOrCreateNew(state) {
       const note = state.notes.find(x => x.id === state.note.id);
       if (note) {
-        state.note = cloneDeep(state.note);
+        merge(note, state.note);
       } else {
         state.notes.push(state.note);
       }

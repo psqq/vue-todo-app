@@ -5,8 +5,8 @@
     </p>
     <p>
       <button @click="saveChanges()">Save changes</button>
-      <button @click="undoAllChangesWithConfirm()">Undo all changes</button>
-      <button @click="deleteThisNote()">Delete</button>
+      <button @click="showUndoAllConfirm = true">Undo all changes</button>
+      <button @click="showDeleteConfirm = true">Delete</button>
     </p>
     <p>
       <button @click="undo()">Undo</button>
@@ -19,17 +19,41 @@
     <h3>{{ note.title }}</h3>
     Todo:
     <Todo v-model="todo" />
+    <Confirm
+      v-if="showDeleteConfirm"
+      title="Are you sure you want to delete the note?"
+      body="This action cannot be undone!"
+      @yes="deleteThisNote()"
+      @no="showDeleteConfirm = false"
+      @close="showDeleteConfirm = false"
+    />
+    <Confirm
+      v-if="showUndoAllConfirm"
+      title="Are you sure you want to discard all changes?"
+      body="This action cannot be undone!"
+      @yes="undoAllChanges(), showUndoAllConfirm = false"
+      @no="showUndoAllConfirm = false"
+      @close="showUndoAllConfirm = false"
+    />
   </div>
 </template>
 
 <script>
 import Vuex from "vuex";
 import Todo from "../components/Todo";
+import Confirm from "../components/Confirm";
 
 export default {
   name: "Note",
   components: {
-    Todo
+    Todo,
+    Confirm
+  },
+  data() {
+    return {
+      showDeleteConfirm: false,
+      showUndoAllConfirm: false
+    };
   },
   computed: {
     ...Vuex.mapState(["note"]),
@@ -65,19 +89,11 @@ export default {
     saveChanges() {
       this.saveOrCreateNew();
     },
-    undoAllChangesWithConfirm() {
-      const yesNo = confirm("Действительно хотите отменить все изменения?");
-      if (yesNo) {
-        this.undoAllChanges();
-      }
-    },
     deleteThisNote() {
       const id = this.note.id;
-      const yesNo = confirm("Вы уверены что хотите удалить заметку?");
-      if (yesNo) {
-        this.deleteNote({ id });
-        this.$router.push("/");
-      }
+      this.deleteNote({ id });
+      this.showDeleteConfirm = false;
+      this.$router.push("/");
     }
   },
   created() {
