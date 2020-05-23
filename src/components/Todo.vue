@@ -16,6 +16,7 @@
         v-model="tasksTitles[index]"
         @change="changed()"
       >
+      <button @click="deleteTask(index)">Delete</button>
     </li>
     <li>
       <button @click="createNew()">Create new</button>
@@ -45,6 +46,11 @@ export default {
     },
     createNew() {
       this.tasksTitles.push("");
+      this.changed();
+    },
+    deleteTask(index) {
+      this.checkedTasks = this.checkedTasks.filter(x => x != index);
+      this.tasksTitles.splice(index, 1);
       this.changed();
     }
   },
