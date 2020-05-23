@@ -6,6 +6,7 @@
     <p>
       <button @click="saveChanges()">Save changes</button>
       <button @click="undoAllChangesWithConfirm()">Undo all changes</button>
+      <button @click="deleteThisNote()">Delete</button>
     </p>
     Title: <input
       type="text"
@@ -52,7 +53,8 @@ export default {
       "setTitle",
       "saveOrCreateNew",
       "setTodo",
-      "undoAllChanges"
+      "undoAllChanges",
+      "delete"
     ]),
     saveChanges() {
       this.saveOrCreateNew();
@@ -61,6 +63,14 @@ export default {
       const yesNo = confirm("Действительно хотите отменить все изменения?");
       if (yesNo) {
         this.undoAllChanges();
+      }
+    },
+    deleteThisNote() {
+      const id = this.note.id;
+      const yesNo = confirm("Вы уверены что хотите удалить заметку?");
+      if (yesNo) {
+        this.delete({ id });
+        this.$router.push("/");
       }
     }
   },
