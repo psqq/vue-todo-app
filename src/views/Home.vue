@@ -16,6 +16,10 @@
 import Vuex from "vuex";
 import NotePreview from "../components/NotePreview";
 
+/**
+ * Компонент который позволяет просмотривать список всех заметок.
+ * А также их создавать и редактировать.
+ */
 export default {
   name: "Home",
   components: {
