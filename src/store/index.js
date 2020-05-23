@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import id from 'shortid';
+import { cloneDeep } from 'lodash';
 
 Vue.use(Vuex);
 
@@ -12,8 +13,16 @@ function createNote(title = '', todo = []) {
   };
 }
 
+function initialState() {
+  return {
+    notes: [],
+    note: null,
+  };
+}
+
 export default new Vuex.Store({
   state: {
+    ...initialState(),
     notes: [
       createNote('Create this app', [
         { title: 'Create home page', done: false },
@@ -32,12 +41,18 @@ export default new Vuex.Store({
     note: null,
   },
   mutations: {
+    emptyState() {
+      this.replaceState({ ...initialState() });
+    },
     createEmptyNote(state) {
       state.note = createNote();
-    }
+    },
+    open(state, payload) {
+      state.note = cloneDeep(state.notes.find(x => x.id === payload.id));
+    },
   },
   actions: {
   },
   modules: {
-  }
+  },
 });

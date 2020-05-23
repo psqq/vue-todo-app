@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Главная</h1>
-    <button>Создать новую заметку</button>
+    <button @click="newNote()">Создать новую заметку</button>
     <div>
       <NotePreview
         v-for="(note, index) in notes"
@@ -23,6 +23,11 @@ export default {
   },
   components: {
     NotePreview
+  },
+  methods: {
+    newNote() {
+      this.$router.push("/note/");
+    }
   }
 };
 </script>

@@ -9120,6 +9120,11 @@ vuex-persistedstate@^3.0.1:
     deepmerge "^4.2.2"
     shvl "^2.0.0"
 
+vuex-undo-redo@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vuex-undo-redo/-/vuex-undo-redo-1.1.4.tgz#daf9b3192b68e1715386d77ad1d607c36522a849"
+  integrity sha512-IfuizJGwCxOa9ZDmLRuWafLBnUYXFhDbbO676oemyz9Kw3ncjo/QNH6SfEEZVOJOrZS9vdiEs5c47qBXPKrWTQ==
+
 vuex@^3.1.3:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.4.0.tgz#20cc086062d750769fce1febb34e7fceeaebde45"

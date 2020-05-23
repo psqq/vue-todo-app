@@ -8,6 +8,7 @@
       >{{ task.title }}</li>
       <li v-if="isMore">...</li>
     </ul>
+    <button @click="open()">Open</button>
   </div>
 </template>
 
@@ -26,6 +27,11 @@ export default {
     },
     isMore() {
       return this.note.todo.length > this.maxTasks;
+    }
+  },
+  methods: {
+    open() {
+      this.$router.push("/note/" + this.note.id);
     }
   }
 };
