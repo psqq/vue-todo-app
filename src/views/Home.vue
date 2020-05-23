@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Главная</h1>
+    <button>Создать новую заметку</button>
+    <div>
+      <NotePreview
+        v-for="(note, index) in notes"
+        :note="note"
+        :key="index"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Vuex from "vuex";
+import NotePreview from "../components/NotePreview";
 
 export default {
-  name: 'Home',
+  name: "Home",
+  computed: {
+    ...Vuex.mapState(["notes"])
+  },
   components: {
-    HelloWorld
+    NotePreview
   }
-}
+};
 </script>
