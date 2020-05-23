@@ -1,5 +1,8 @@
 <template>
   <div class="about">
+    <p>
+      <router-link to="/">Main page</router-link>
+    </p>
     Title:
     <h3>{{ note.title }}</h3>
     Todo:
