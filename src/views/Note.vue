@@ -10,20 +10,19 @@
     >
     <h3>{{ note.title }}</h3>
     Todo:
-    <ul>
-      <li
-        v-for="(task, index) in note.todo"
-        :key="index"
-      >{{ task.title }}</li>
-    </ul>
+    <Todo v-model="todo" />
   </div>
 </template>
 
 <script>
 import Vuex from "vuex";
+import Todo from "../components/Todo";
 
 export default {
   name: "Note",
+  components: {
+    Todo
+  },
   computed: {
     ...Vuex.mapState(["note"]),
     title: {
@@ -33,6 +32,14 @@ export default {
       set(title) {
         this.setTitle({ title });
       }
+    },
+    todo: {
+      get() {
+        return this.note.todo;
+      },
+      set(todo) {
+        this.setTodo({ todo });
+      }
     }
   },
   methods: {
@@ -40,7 +47,8 @@ export default {
       "open",
       "createEmptyNote",
       "setTitle",
-      "saveOrCreateNew"
+      "saveOrCreateNew",
+      "setTodo"
     ]),
     saveChanges() {
       this.saveOrCreateNew();

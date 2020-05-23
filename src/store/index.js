@@ -56,6 +56,9 @@ export default new Vuex.Store({
     setTitle(state, payload) {
       state.note.title = payload.title;
     },
+    setTodo(state, payload) {
+      state.note.todo = payload.todo;
+    },
     saveOrCreateNew(state) {
       const note = state.notes.find(x => x.id === state.note.id);
       if (note) {
