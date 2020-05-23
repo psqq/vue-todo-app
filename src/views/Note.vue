@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="about"
-    v-if="note"
-  >
+  <div class="about">
     <p>
       <router-link to="/">Main page</router-link>
     </p>
@@ -61,7 +58,7 @@ export default {
       "saveOrCreateNew",
       "setTodo",
       "undoAllChanges",
-      "delete",
+      "deleteNote",
       "undo",
       "redo"
     ]),
@@ -78,7 +75,7 @@ export default {
       const id = this.note.id;
       const yesNo = confirm("Вы уверены что хотите удалить заметку?");
       if (yesNo) {
-        this.delete({ id });
+        this.deleteNote({ id });
         this.$router.push("/");
       }
     }

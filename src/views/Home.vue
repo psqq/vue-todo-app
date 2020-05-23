@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Главная</h1>
-    <button @click="newNote()">Создать новую заметку</button>
+    <h1>All notes</h1>
+    <button @click="newNote()">Create new note</button>
     <div>
       <NotePreview
         v-for="(note, index) in notes"
@@ -18,11 +18,11 @@ import NotePreview from "../components/NotePreview";
 
 export default {
   name: "Home",
-  computed: {
-    ...Vuex.mapState(["notes"])
-  },
   components: {
     NotePreview
+  },
+  computed: {
+    ...Vuex.mapState(["notes"])
   },
   methods: {
     newNote() {

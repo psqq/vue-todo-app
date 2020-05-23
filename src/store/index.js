@@ -61,7 +61,7 @@ export default new Vuex.Store({
       state.history = [cloneDeep(state.note)];
       state.historyIndex = 0;
     },
-    delete(state, payload) {
+    deleteNote(state, payload) {
       state.notes = state.notes.filter(x => x.id != payload.id);
     },
     setTitle(state, payload) {

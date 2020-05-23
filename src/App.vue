@@ -5,4 +5,7 @@
 </template>
 
 <style lang="scss">
+body {
+  margin: 25px;
+}
 </style>

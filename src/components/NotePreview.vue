@@ -12,19 +12,32 @@
       <li v-if="isMore">...</li>
     </ul>
     <button @click="open()">Open</button>
-    <button @click="deleteNote()">Delete</button>
+    <button @click="showConfirm = true">Delete</button>
+    <Confirm
+      v-if="showConfirm"
+      title="Are you sure you want to delete the note?"
+      body="This action cannot be undone!"
+      @yes="deleteNote({ id: note.id }), showConfirm = false"
+      @no="showConfirm = false"
+      @close="showConfirm = false"
+    />
   </div>
 </template>
 
 <script>
 import Vuex from "vuex";
+import Confirm from "./Confirm";
 
 export default {
   name: "NotePreview",
+  components: {
+    Confirm
+  },
   props: ["note"],
   data() {
     return {
-      maxTasks: 2
+      maxTasks: 2,
+      showConfirm: false
     };
   },
   computed: {
@@ -36,16 +49,9 @@ export default {
     }
   },
   methods: {
-    ...Vuex.mapMutations(["delete"]),
+    ...Vuex.mapMutations(["deleteNote"]),
     open() {
       this.$router.push("/note/" + this.note.id);
-    },
-    deleteNote() {
-      const id = this.note.id;
-      const yesNo = confirm("Вы уверены что хотите удалить заметку?");
-      if (yesNo) {
-        this.delete({ id });
-      }
     }
   }
 };
