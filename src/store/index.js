@@ -18,6 +18,15 @@ export default new Vuex.Store({
       createNote('Create this app', [
         { title: 'Create home page', done: false },
         { title: 'Create note page', done: false },
+        { title: 'Create note page', done: false },
+      ]),
+      createNote('Test note 1', [
+        { title: 'Task 1', done: false },
+        { title: 'Task 2', done: false },
+        { title: 'Task 3', done: false },
+        { title: 'Task 5', done: false },
+        { title: 'Task 6', done: false },
+        { title: 'Task 7', done: false },
       ]),
     ],
     note: null,
