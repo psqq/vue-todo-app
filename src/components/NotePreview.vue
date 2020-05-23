@@ -5,7 +5,10 @@
       <li
         v-for="(task, index) in previewTodo"
         :key="index"
-      >{{ task.title }}</li>
+        :style="{textDecoration: task.done ? 'line-through' : 'none'}"
+      >
+        {{ task.title }}
+      </li>
       <li v-if="isMore">...</li>
     </ul>
     <button @click="open()">Open</button>

@@ -25,16 +25,16 @@ export default new Vuex.Store({
     ...initialState(),
     notes: [
       createNote('Create this app', [
-        { title: 'Create home page', done: false },
-        { title: 'Create note page', done: false },
-        { title: 'Create note page', done: false },
+        { title: 'Create home page', done: true },
+        { title: 'Create note page', done: true },
+        { title: 'Create todo component', done: true },
       ]),
       createNote('Test note 1', [
         { title: 'Task 1', done: false },
-        { title: 'Task 2', done: false },
+        { title: 'Task 2', done: true },
         { title: 'Task 3', done: false },
         { title: 'Task 5', done: false },
-        { title: 'Task 6', done: false },
+        { title: 'Task 6', done: true },
         { title: 'Task 7', done: false },
       ]),
     ],
@@ -57,14 +57,24 @@ export default new Vuex.Store({
       state.note.title = payload.title;
     },
     setTodo(state, payload) {
-      state.note.todo = payload.todo;
+      state.note.todo = cloneDeep(payload.todo);
     },
     saveOrCreateNew(state) {
       const note = state.notes.find(x => x.id === state.note.id);
       if (note) {
-        merge(note, state.note);
+        state.note = cloneDeep(state.note);
       } else {
         state.notes.push(state.note);
+      }
+    },
+    undoAllChanges(state) {
+      const note = state.notes.find(x => x.id === state.note.id);
+      if (note) {
+
+        console.log(JSON.parse(JSON.stringify(state.note)), JSON.parse(JSON.stringify(note)));
+        state.note = note;
+      } else {
+        state.note = createNote();
       }
     }
   },

@@ -9,10 +9,12 @@
         id="checkbox"
         :value="index"
         v-model="checkedTasks"
+        @change="changed()"
       >
       <input
         type="text"
         v-model="tasksTitles[index]"
+        @change="changed()"
       >
     </li>
     <li>
@@ -30,10 +32,7 @@ export default {
   },
   props: ["todo"],
   data() {
-    return {
-      checkedTasks: this.todo.map((x, i) => x.done && i).filter(x => x != null),
-      tasksTitles: this.todo.map(x => x.title)
-    };
+    return { checkedTasks: [], tasksTitles: [] };
   },
   computed: {},
   methods: {
@@ -50,11 +49,14 @@ export default {
     }
   },
   watch: {
-    checkedTasks() {
-      this.changed();
-    },
-    tasksTitles() {
-      this.changed();
+    todo: {
+      handler(todo) {
+        this.checkedTasks = todo
+          .map((x, i) => x.done && i)
+          .filter(x => x != null);
+        this.tasksTitles = todo.map(x => x.title);
+      },
+      immediate: true
     }
   }
 };

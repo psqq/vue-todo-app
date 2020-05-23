@@ -3,7 +3,10 @@
     <p>
       <router-link to="/">Main page</router-link>
     </p>
-    <button @click="saveChanges()">Save changes</button>
+    <p>
+      <button @click="saveChanges()">Save changes</button>
+      <button @click="undoAllChangesWithConfirm()">Undo all changes</button>
+    </p>
     Title: <input
       type="text"
       v-model="title"
@@ -48,10 +51,17 @@ export default {
       "createEmptyNote",
       "setTitle",
       "saveOrCreateNew",
-      "setTodo"
+      "setTodo",
+      "undoAllChanges"
     ]),
     saveChanges() {
       this.saveOrCreateNew();
+    },
+    undoAllChangesWithConfirm() {
+      const yesNo = confirm("Действительно хотите отменить все изменения?");
+      if (yesNo) {
+        this.undoAllChanges();
+      }
     }
   },
   created() {
