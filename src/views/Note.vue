@@ -98,7 +98,12 @@ export default {
    */
   computed: {
     ...Vuex.mapState(["note"]),
-    ...Vuex.mapGetters(["isChanges", "canUndo", "canRedo"]),
+    ...Vuex.mapGetters([
+      "isChanges",
+      "canUndo",
+      "canRedo",
+      "isActuallyChanges"
+    ]),
     title: {
       get() {
         return this.note.title;
@@ -156,7 +161,7 @@ export default {
    * всплывает соответсвующее предупреждение.
    */
   beforeRouteLeave(to, from, next) {
-    if (!this.isChanges) {
+    if (!this.isActuallyChanges) {
       return next();
     } else if (this.showLeaveConfirm && this.leaveTo) {
       this.showLeaveConfirm = false;

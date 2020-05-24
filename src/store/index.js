@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from "vuex-persistedstate";
 import id from 'shortid';
-import { cloneDeep, merge } from 'lodash';
+import { cloneDeep, merge, isEqual } from 'lodash';
 import exampleNotes from './example-notes';
 
 Vue.use(Vuex);
@@ -122,6 +122,14 @@ export default new Vuex.Store({
         return true;
       }
       return state.historyIndex > 0;
+    },
+    // ... изменения есть на самом деле
+    isActuallyChanges(state) {
+      const note = state.notes.find(x => x.id === state.note.id);
+      if (!note) {
+        return true;
+      }
+      return !isEqual(note, state.note);
     },
     // ... есть изменения для отката
     canUndo(state) {
