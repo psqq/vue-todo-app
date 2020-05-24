@@ -39,6 +39,14 @@
       @no="showUndoAllConfirm = false"
       @close="showUndoAllConfirm = false"
     />
+    <Confirm
+      v-if="showLeaveConfirm"
+      title="Are you sure you want to leave the page?"
+      body="You have unsaved changes!"
+      @yes="leavePage()"
+      @no="showLeaveConfirm = false"
+      @close="showLeaveConfirm = false"
+    />
   </div>
 </template>
 
@@ -64,7 +72,10 @@ export default {
       // ... удаления заметки
       showDeleteConfirm: false,
       // ... подтвержения отмены всех изменений
-      showUndoAllConfirm: false
+      showUndoAllConfirm: false,
+      // ... подтвержения ухода со страницы с потерей всех изменений
+      showLeaveConfirm: false,
+      leaveTo: ""
     };
   },
   /**
@@ -115,7 +126,26 @@ export default {
       this.deleteNote({ id });
       this.showDeleteConfirm = false;
       this.$router.push("/");
+    },
+    /**
+     * Метод для перехода со страницы, если пользователь нажмет
+     * да в соответствующем предупреждении.
+     */
+    leavePage() {
+      this.$router.push(this.leaveTo);
     }
+  },
+  /**
+   * Перед переходом на другие страницы если есть несохраненные изменния
+   * всплывает соответсвующее предупреждение.
+   */
+  beforeRouteLeave(to, from, next) {
+    if (this.showLeaveConfirm && this.leaveTo) {
+      this.showLeaveConfirm = false;
+      return next();
+    }
+    this.showLeaveConfirm = true;
+    this.leaveTo = to.fullPath;
   },
   /**
    * Во время создания компонента ему передается ид заметки.

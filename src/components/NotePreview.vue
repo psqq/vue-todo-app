@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="note-preview">
     <h3>{{ note.title }}</h3>
     <ul>
       <li

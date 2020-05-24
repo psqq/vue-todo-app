@@ -2,7 +2,7 @@
   <div>
     <h1>All notes</h1>
     <button @click="newNote()">Create new note</button>
-    <div>
+    <div class="notes">
       <NotePreview
         v-for="(note, index) in notes"
         :note="note"
@@ -35,3 +35,13 @@ export default {
   }
 };
 </script>
+
+<style>
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+}
+.notes > div {
+  margin: 10px;
+}
+</style>
