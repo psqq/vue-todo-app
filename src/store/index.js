@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from "vuex-persistedstate";
 import id from 'shortid';
 import { cloneDeep, merge } from 'lodash';
+import exampleNotes from './example-notes';
 
 Vue.use(Vuex);
 
@@ -11,7 +12,7 @@ Vue.use(Vuex);
  * @param {string} title 
  * @param {{ title: string, done: boolean }[]} todo 
  */
-function createNote(title = '', todo = []) {
+export function createNote(title = '', todo = []) {
   return {
     id: id(),
     title,
@@ -33,21 +34,7 @@ export default new Vuex.Store({
   state: {
     ...initialState(),
     // Несколько записей для тестирования
-    notes: [
-      createNote('Create this app', [
-        { title: 'Create home page', done: false },
-        { title: 'Create note page', done: true },
-        { title: 'Create todo component', done: true },
-      ]),
-      createNote('Test note 1', [
-        { title: 'Task 1', done: false },
-        { title: 'Task 2', done: true },
-        { title: 'Task 3', done: false },
-        { title: 'Task 5', done: false },
-        { title: 'Task 6', done: true },
-        { title: 'Task 7', done: false },
-      ]),
-    ],
+    notes: exampleNotes,
     // Текущая заметка для редактирования
     note: null,
     // История заметок.
@@ -124,6 +111,25 @@ export default new Vuex.Store({
       if (state.historyIndex < state.history.length - 1) {
         state.note = cloneDeep(state.history[++state.historyIndex]);
       }
+    },
+  },
+  getters: {
+    // Возвращает true, если
+    // ... пользователь делал изменения
+    isChanges(state) {
+      const note = state.notes.find(x => x.id === state.note.id);
+      if (!note) {
+        return true;
+      }
+      return state.historyIndex > 0;
+    },
+    // ... есть изменения для отката
+    canUndo(state) {
+      return state.historyIndex > 0;
+    },
+    // ... есть изменения для возврата
+    canRedo(state) {
+      return state.historyIndex < state.history.length - 1;
     },
   },
   actions: {

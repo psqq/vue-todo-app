@@ -6,13 +6,25 @@
     </p>
     <!-- Кнопки для работы с заметками -->
     <p>
-      <button @click="saveChanges()">Save changes</button>
-      <button @click="showUndoAllConfirm = true">Undo all changes</button>
+      <button
+        @click="saveChanges()"
+        :disabled="!isChanges"
+      >Save changes</button>
+      <button
+        @click="showUndoAllConfirm = true"
+        :disabled="!isChanges"
+      >Undo all changes</button>
       <button @click="showDeleteConfirm = true">Delete</button>
     </p>
     <p>
-      <button @click="undo()">Undo</button>
-      <button @click="redo()">Redo</button>
+      <button
+        @click="undo()"
+        :disabled="!canUndo"
+      >Undo</button>
+      <button
+        @click="redo()"
+        :disabled="!canRedo"
+      >Redo</button>
     </p>
     <!-- Вывод информации о заметки -->
     Title: <input
@@ -23,6 +35,7 @@
     Todo:
     <Todo v-model="todo" />
     <!-- Диалоговые окна для подтвержения изменений -->
+    <!-- удаление -->
     <Confirm
       v-if="showDeleteConfirm"
       title="Are you sure you want to delete the note?"
@@ -31,6 +44,7 @@
       @no="showDeleteConfirm = false"
       @close="showDeleteConfirm = false"
     />
+    <!-- отмена всех изменений -->
     <Confirm
       v-if="showUndoAllConfirm"
       title="Are you sure you want to discard all changes?"
@@ -39,6 +53,7 @@
       @no="showUndoAllConfirm = false"
       @close="showUndoAllConfirm = false"
     />
+    <!-- уход со страницы -->
     <Confirm
       v-if="showLeaveConfirm"
       title="Are you sure you want to leave the page?"
@@ -83,6 +98,7 @@ export default {
    */
   computed: {
     ...Vuex.mapState(["note"]),
+    ...Vuex.mapGetters(["isChanges", "canUndo", "canRedo"]),
     title: {
       get() {
         return this.note.title;
@@ -140,7 +156,9 @@ export default {
    * всплывает соответсвующее предупреждение.
    */
   beforeRouteLeave(to, from, next) {
-    if (this.showLeaveConfirm && this.leaveTo) {
+    if (!this.isChanges) {
+      return next();
+    } else if (this.showLeaveConfirm && this.leaveTo) {
       this.showLeaveConfirm = false;
       return next();
     }
